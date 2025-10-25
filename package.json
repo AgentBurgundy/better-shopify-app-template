@@ -1,0 +1,28 @@
+{
+  "name": "shopify-app-template",
+  "version": "1.0.0",
+  "description": "A clean Shopify app template with yarn workspaces",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces foreach -At run build",
+    "dev": "yarn workspace @myapp/shopify-app dev",
+    "clean": "yarn workspaces foreach -A run clean",
+    "db:generate": "yarn workspace @myapp/database prisma:generate",
+    "db:migrate": "yarn workspace @myapp/database prisma:migrate",
+    "db:deploy": "yarn workspace @myapp/database prisma:deploy",
+    "db:studio": "yarn workspace @myapp/database prisma:studio"
+  },
+  "resolutions": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "yarn@4.10.3"
+}

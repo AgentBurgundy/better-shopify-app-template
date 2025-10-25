@@ -1,0 +1,33 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+name = "my-shopify-app"
+client_id = "" # Set via Shopify CLI or environment
+application_url = "http://localhost:3000"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "" # Your development store URL
+
+[access_scopes]
+scopes = "write_products,read_customers"
+
+[auth]
+redirect_urls = [
+  "http://localhost:3000/auth/callback",
+  "http://localhost:3000/auth/shopify/callback",
+  "http://localhost:3000/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2025-10"
+
+[pos]
+embedded = false
+
+[app_proxy]
+# Uncomment to configure app proxy
+# url = "https://your-backend.com"
+# subpath = "apps"
+# prefix = "apps"
+

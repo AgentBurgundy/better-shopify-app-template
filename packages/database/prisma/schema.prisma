@@ -1,0 +1,51 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Shopify session storage
+model Session {
+  id            String    @id
+  shop          String    @unique
+  state         String
+  isOnline      Boolean   @default(false)
+  scope         String?
+  expires       DateTime?
+  accessToken   String
+  userId        String?
+  firstName     String?
+  lastName      String?
+  email         String?
+  accountOwner  Boolean   @default(false)
+  locale        String?
+  collaborator  Boolean   @default(false)
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("sessions")
+}
+
+// Shop model - represents a Shopify store
+model Shop {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  shopDomain  String   @unique @map("shop_domain")
+  shopName    String?  @map("shop_name")
+  accessToken String   @map("access_token")
+  scope       String?
+  status      String   @default("active") // active, cancelled, suspended
+  isOnline    Boolean  @default(false) @map("is_online")
+  settings    Json     @default("{}")
+  installedAt DateTime @default(now()) @map("installed_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@map("shops")
+}
+

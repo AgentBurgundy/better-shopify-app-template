@@ -1,0 +1,55 @@
+# Development Dockerfile for Shopify App
+# Using Debian-based image for better native module support
+FROM node:20-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    jq \
+    openssl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable Corepack for Yarn 4
+RUN corepack enable
+
+WORKDIR /app
+
+# Copy root package files
+COPY package.json yarn.lock ./
+COPY .yarnrc.yml ./
+
+# Copy workspace package files
+COPY packages/core/package.json ./packages/core/
+COPY packages/database/package.json ./packages/database/
+COPY apps/shopify-app/package.json ./apps/shopify-app/
+
+# Install all dependencies (including dev dependencies)
+RUN yarn install
+
+# Copy source code
+COPY tsconfig.base.json ./
+COPY packages/ ./packages/
+COPY apps/shopify-app/ ./apps/shopify-app/
+
+# Generate Prisma client
+RUN cd packages/database && npx prisma generate
+
+# Build shared packages for development
+RUN cd packages/core && yarn build
+RUN cd packages/database && yarn build
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables
+ENV NODE_ENV=development
+ENV PORT=3000
+ENV HOST=0.0.0.0
+
+# Change to shopify app directory
+WORKDIR /app/apps/shopify-app
+
+# Start the development server
+CMD ["yarn", "dev:docker"]
+

@@ -1,0 +1,11 @@
+.cache
+build
+node_modules
+.env
+.env.local
+.shopify
+.react-router
+*.log
+.DS_Store
+dist
+

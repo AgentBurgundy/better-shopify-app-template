@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: shopify-app-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: myapp
+      POSTGRES_PASSWORD: myapp_password
+      POSTGRES_DB: myapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Shopify App (Development)
+  shopify-app:
+    build:
+      context: .
+      dockerfile: apps/shopify-app/Dockerfile.dev
+    container_name: shopify-app-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Database
+      DATABASE_URL: postgresql://myapp:myapp_password@postgres:5432/myapp
+      
+      # Shopify (set these in .env file or here)
+      SHOPIFY_API_KEY: ${SHOPIFY_API_KEY:-your_api_key}
+      SHOPIFY_API_SECRET: ${SHOPIFY_API_SECRET:-your_api_secret}
+      SHOPIFY_SCOPES: ${SHOPIFY_SCOPES:-write_products,read_customers}
+      SHOPIFY_APP_URL: ${SHOPIFY_APP_URL:-http://localhost:3000}
+      
+      # Node
+      NODE_ENV: development
+      PORT: 3000
+      HOST: 0.0.0.0
+    volumes:
+      # Mount source code for hot reload
+      - ./packages/core/src:/app/packages/core/src
+      - ./packages/database/src:/app/packages/database/src
+      - ./packages/database/prisma:/app/packages/database/prisma
+      - ./apps/shopify-app/app:/app/apps/shopify-app/app
+      - ./apps/shopify-app/public:/app/apps/shopify-app/public
+      
+      # Ignore node_modules and build artifacts
+      - /app/node_modules
+      - /app/apps/shopify-app/build
+      - /app/apps/shopify-app/.shopify
+      - /app/apps/shopify-app/.react-router
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        cd /app/packages/database &&
+        npx prisma migrate deploy &&
+        cd /app/apps/shopify-app &&
+        yarn dev:docker
+      "
+
+volumes:
+  postgres_data:
+    driver: local
+

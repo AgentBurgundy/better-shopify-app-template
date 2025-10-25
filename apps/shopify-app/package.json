@@ -1,0 +1,43 @@
+{
+  "name": "@myapp/shopify-app",
+  "version": "1.0.0",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "react-router build",
+    "dev": "shopify app dev",
+    "dev:docker": "vite dev --host 0.0.0.0",
+    "start": "react-router-serve ./build/server/index.js",
+    "clean": "rm -rf build .shopify .react-router"
+  },
+  "dependencies": {
+    "@myapp/core": "*",
+    "@myapp/database": "*",
+    "@prisma/client": "^6.16.3",
+    "@react-router/dev": "^7.9.1",
+    "@react-router/fs-routes": "^7.9.1",
+    "@react-router/node": "^7.9.3",
+    "@react-router/serve": "^7.9.1",
+    "@shopify/app-bridge-react": "^4.1.6",
+    "@shopify/polaris": "^13.0.0",
+    "@shopify/polaris-icons": "^9.0.0",
+    "@shopify/shopify-api": "^12.0.0",
+    "@shopify/shopify-app-react-router": "^1.0.0",
+    "@shopify/shopify-app-session-storage-prisma": "^7.0.0",
+    "isbot": "^5.1.0",
+    "prisma": "^6.16.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^7.9.1",
+    "vite-tsconfig-paths": "^5.0.1"
+  },
+  "devDependencies": {
+    "@shopify/api-codegen-preset": "^1.1.1",
+    "@types/node": "^22.2.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "typescript": "^5.2.2",
+    "vite": "^6.2.2"
+  }
+}

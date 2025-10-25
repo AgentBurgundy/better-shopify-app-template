@@ -1,0 +1,9 @@
+node_modules
+build
+.shopify
+.react-router
+.env
+.env.local
+*.log
+.DS_Store
+
