@@ -1,0 +1,12 @@
+version: "2"
+authtoken: 32DkQDG5vOwYFYGXCnHUO1Z9nNC_DrK5QnU24h1ydcpMQ5Ex
+tunnels:
+  shopify-app:
+    addr: shopify-app:3000
+    proto: http
+    schemes:
+      - https
+    inspect: true
+    # Optional: use a custom domain if you have ngrok pro
+    # domain: your-domain.ngrok.app
+

@@ -55,9 +55,15 @@ shopify-app-template/
 
 ### Quick Setup (Recommended)
 
-We provide automated setup scripts that will install all prerequisites and dependencies:
+We provide an automated setup script that works on all platforms:
 
-**Windows (PowerShell):**
+```bash
+node scripts/setup.js
+```
+
+Or use the legacy platform-specific scripts:
+
+**Windows:**
 ```powershell
 .\setup.ps1
 ```
@@ -68,13 +74,22 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-These scripts will:
-- ✓ Check and install Node.js (via nvm if needed)
-- ✓ Check and install Yarn
-- ✓ Enable Corepack
+The setup script will:
+- ✓ Check if Node.js is installed (v18+)
+- ✓ Enable Corepack and install Yarn
 - ✓ Install all project dependencies
 
-> **Note:** See [SETUP_SCRIPTS.md](SETUP_SCRIPTS.md) for troubleshooting and detailed script documentation.
+> **Note:** The new `setup.js` is cross-platform and recommended. Legacy scripts are kept for compatibility.
+
+### Rename Your App
+
+After setup, rename the app from `@myapp` to your custom name:
+
+```bash
+yarn rename
+```
+
+This will interactively prompt you for a new name and update all references throughout the project.
 
 ### Manual Installation
 
@@ -151,6 +166,10 @@ await db.shop.create({
 From the root directory:
 
 ```bash
+# Setup
+yarn setup               # Install all prerequisites and dependencies
+yarn rename              # Rename app from @myapp to your custom name
+
 # Development
 yarn dev                  # Start Shopify app in dev mode
 
@@ -169,6 +188,32 @@ yarn clean               # Clean all build artifacts
 ```
 
 **Note:** The build script uses `yarn workspaces foreach -At` where `-t` (topological) ensures packages are built in dependency order automatically.
+
+## 🏗️ Project Architecture
+
+### Monorepo Structure
+
+```
+shopify-app-template/
+├── apps/shopify-app/          # Main Shopify application
+├── packages/
+│   ├── core/                  # Shared utilities
+│   └── database/              # Prisma ORM + models
+└── scripts/                   # Setup & rename scripts
+```
+
+### Build Process
+
+The `-t` (topological) flag automatically builds in dependency order:
+1. `@myapp/core` → 2. `@myapp/database` → 3. `@myapp/shopify-app`
+
+### Package Imports
+
+```typescript
+// In shopify-app
+import { createAppConfig } from '@myapp/core';
+import { prisma, db } from '@myapp/database';
+```
 
 ## 🔧 Configuration
 
@@ -219,19 +264,52 @@ yarn db:migrate
 
 The template includes full Docker support for both development and production.
 
-### Quick Start with Docker Compose
+### Docker Compose Setup
+
+#### Option 1: With Database Only (Use Shopify CLI for tunneling)
 
 ```bash
-# Copy environment file
-cp env.docker.example .env
+# Start PostgreSQL only
+docker-compose up postgres
 
-# Edit .env with your Shopify credentials
-
-# Start app + database
-docker-compose up
+# In another terminal, run the app normally
+yarn dev
 ```
 
-See [DOCKER.md](DOCKER.md) for detailed Docker deployment instructions.
+#### Option 2: Full Stack with ngrok Tunnel
+
+```bash
+# Get your ngrok authtoken from https://dashboard.ngrok.com
+# Add to .env file:
+NGROK_AUTHTOKEN=your_token_here
+
+# Start everything including ngrok tunnel
+docker-compose --profile with-tunnel up
+
+# Access ngrok dashboard at http://localhost:4040
+# Use the HTTPS URL shown in ngrok dashboard for your Shopify app
+```
+
+#### Option 3: Production Build
+
+```bash
+# Build production image
+docker build -f apps/shopify-app/Dockerfile -t shopify-app:latest .
+
+# Run with environment variables
+docker run -p 8080:8080 \
+  -e DATABASE_URL="postgresql://user:pass@host:5432/db" \
+  -e SHOPIFY_API_KEY="your_key" \
+  -e SHOPIFY_API_SECRET="your_secret" \
+  shopify-app:latest
+```
+
+### Docker Files Included
+
+- `Dockerfile` - Production build (multi-stage, optimized)
+- `Dockerfile.dev` - Development with hot reload
+- `docker-compose.yml` - Database + App + ngrok (optional)
+- `ngrok.yml` - ngrok tunnel configuration
 
 ## 🏭 Production Deployment
 
@@ -255,14 +333,14 @@ See [DOCKER.md](DOCKER.md) for detailed Docker deployment instructions.
 
 ```bash
 # Build production image
-docker build -f apps/shopify-app/Dockerfile -t shopify-app:latest .
+docker build -f apps/shopify-app/Dockerfile -t shopify-app:la@myapp .
 
 # Run with environment variables
 docker run -p 8080:8080 \
   -e DATABASE_URL="..." \
   -e SHOPIFY_API_KEY="..." \
   -e SHOPIFY_API_SECRET="..." \
-  shopify-app:latest
+  shopify-app:la@myapp
 ```
 
 ## 📚 Tech Stack
@@ -273,14 +351,40 @@ docker run -p 8080:8080 \
 - **Language:** TypeScript
 - **Package Manager:** Yarn Workspaces
 - **Build Tool:** Vite
+- **Deployment:** Docker + Docker Compose
+
+## 🔒 Environment Variables
+
+Create `apps/shopify-app/.env` with:
+
+```env
+# Shopify Configuration
+SHOPIFY_API_KEY=your_api_key
+SHOPIFY_API_SECRET=your_api_secret
+SHOPIFY_SCOPES=write_products,read_customers
+SHOPIFY_APP_URL=https://your-tunnel.ngrok.io
+
+# Database
+DATABASE_URL=postgresql://user:password@localhost:5432/myapp
+
+# Environment
+NODE_ENV=development
+```
+
+For Docker, use `.env` in project root with `NGROK_AUTHTOKEN`.
 
 ## 🤝 Contributing
 
-This is a template repository. Feel free to customize it for your needs!
+This is a template repository. Customize it for your needs:
+
+1. Run `yarn rename` to change from `@myapp` to your app name
+2. Update `apps/shopify-app/shopify.app.toml` with your app details
+3. Modify the Prisma schema in `packages/database/prisma/schema.prisma`
+4. Add your routes in `apps/shopify-app/app/routes/`
 
 ## 📄 License
 
-MIT
+MIT - Free to use for commercial and personal projects
 
 ## 🔗 Resources
 
@@ -288,4 +392,5 @@ MIT
 - [React Router v7](https://reactrouter.com/)
 - [Prisma Documentation](https://www.prisma.io/docs)
 - [Yarn Workspaces](https://yarnpkg.com/features/workspaces)
+- [ngrok Documentation](https://ngrok.com/docs)
 

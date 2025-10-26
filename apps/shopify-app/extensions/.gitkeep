@@ -1,0 +1,5 @@
+# This directory is for Shopify app extensions
+#
+# Generate extensions with: yarn generate
+# Learn more: https://shopify.dev/docs/apps/app-extensions
+

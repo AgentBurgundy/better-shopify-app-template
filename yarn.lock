@@ -1317,57 +1317,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@myapp/core@npm:*, @myapp/core@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "@myapp/core@workspace:packages/core"
-  dependencies:
-    typescript: "npm:^5.3.3"
-  languageName: unknown
-  linkType: soft
-
-"@myapp/database@npm:*, @myapp/database@workspace:packages/database":
-  version: 0.0.0-use.local
-  resolution: "@myapp/database@workspace:packages/database"
-  dependencies:
-    "@prisma/client": "npm:^6.16.3"
-    "@types/node": "npm:^20.0.0"
-    prisma: "npm:^6.16.3"
-    typescript: "npm:^5.3.3"
-  languageName: unknown
-  linkType: soft
-
-"@myapp/shopify-app@workspace:apps/shopify-app":
-  version: 0.0.0-use.local
-  resolution: "@myapp/shopify-app@workspace:apps/shopify-app"
-  dependencies:
-    "@myapp/core": "npm:*"
-    "@myapp/database": "npm:*"
-    "@prisma/client": "npm:^6.16.3"
-    "@react-router/dev": "npm:^7.9.1"
-    "@react-router/fs-routes": "npm:^7.9.1"
-    "@react-router/node": "npm:^7.9.3"
-    "@react-router/serve": "npm:^7.9.1"
-    "@shopify/api-codegen-preset": "npm:^1.1.1"
-    "@shopify/app-bridge-react": "npm:^4.1.6"
-    "@shopify/polaris": "npm:^13.0.0"
-    "@shopify/polaris-icons": "npm:^9.0.0"
-    "@shopify/shopify-api": "npm:^12.0.0"
-    "@shopify/shopify-app-react-router": "npm:^1.0.0"
-    "@shopify/shopify-app-session-storage-prisma": "npm:^7.0.0"
-    "@types/node": "npm:^22.2.0"
-    "@types/react": "npm:18.3.12"
-    "@types/react-dom": "npm:18.3.1"
-    isbot: "npm:^5.1.0"
-    prisma: "npm:^6.16.3"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-router: "npm:^7.9.1"
-    typescript: "npm:^5.2.2"
-    vite: "npm:^6.2.2"
-    vite-tsconfig-paths: "npm:^5.0.1"
-  languageName: unknown
-  linkType: soft
-
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -2140,6 +2089,57 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@test-app/core@npm:*, @test-app/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@test-app/core@workspace:packages/core"
+  dependencies:
+    typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
+
+"@test-app/database@npm:*, @test-app/database@workspace:packages/database":
+  version: 0.0.0-use.local
+  resolution: "@test-app/database@workspace:packages/database"
+  dependencies:
+    "@prisma/client": "npm:^6.16.3"
+    "@types/node": "npm:^20.0.0"
+    prisma: "npm:^6.16.3"
+    typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
+
+"@test-app/shopify-app@workspace:apps/shopify-app":
+  version: 0.0.0-use.local
+  resolution: "@test-app/shopify-app@workspace:apps/shopify-app"
+  dependencies:
+    "@prisma/client": "npm:^6.16.3"
+    "@react-router/dev": "npm:^7.9.1"
+    "@react-router/fs-routes": "npm:^7.9.1"
+    "@react-router/node": "npm:^7.9.3"
+    "@react-router/serve": "npm:^7.9.1"
+    "@shopify/api-codegen-preset": "npm:^1.1.1"
+    "@shopify/app-bridge-react": "npm:^4.1.6"
+    "@shopify/polaris": "npm:^13.0.0"
+    "@shopify/polaris-icons": "npm:^9.0.0"
+    "@shopify/shopify-api": "npm:^12.0.0"
+    "@shopify/shopify-app-react-router": "npm:^1.0.0"
+    "@shopify/shopify-app-session-storage-prisma": "npm:^7.0.0"
+    "@test-app/core": "npm:*"
+    "@test-app/database": "npm:*"
+    "@types/node": "npm:^22.2.0"
+    "@types/react": "npm:18.3.12"
+    "@types/react-dom": "npm:18.3.1"
+    isbot: "npm:^5.1.0"
+    prisma: "npm:^6.16.3"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-router: "npm:^7.9.1"
+    typescript: "npm:^5.2.2"
+    vite: "npm:^6.2.2"
+    vite-tsconfig-paths: "npm:^5.0.1"
+  languageName: unknown
+  linkType: soft
+
 "@theguild/federation-composition@npm:^0.20.1":
   version: 0.20.2
   resolution: "@theguild/federation-composition@npm:0.20.2"
@@ -2202,15 +2202,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:*":
-  version: 19.2.2
-  resolution: "@types/react-dom@npm:19.2.2"
-  peerDependencies:
-    "@types/react": ^19.2.0
-  checksum: 10c0/6154dfb8e7a638313d7fa15b2b16494f2235afda4c43be37d10f34e5c7a730f6b95117facb5e6eebc73b15cceea7f6da23be46cda5d2262fd00fd7e6069547e3
-  languageName: node
-  linkType: hard
-
 "@types/react-dom@npm:18.3.1":
   version: 18.3.1
   resolution: "@types/react-dom@npm:18.3.1"
@@ -2226,15 +2217,6 @@ __metadata:
   peerDependencies:
     "@types/react": "*"
   checksum: 10c0/0441b8b47c69312c89ec0760ba477ba1a0808a10ceef8dc1c64b1013ed78517332c30f18681b0ec0b53542731f1ed015169fed1d127cc91222638ed955478ec7
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:*":
-  version: 19.2.2
-  resolution: "@types/react@npm:19.2.2"
-  dependencies:
-    csstype: "npm:^3.0.2"
-  checksum: 10c0/f830b1204aca4634ce3c6cb3477b5d3d066b80a4dd832a4ee0069acb504b6debd2416548a43a11c1407c12bc60e2dc6cf362934a18fe75fe06a69c0a98cba8ab
   languageName: node
   linkType: hard
 

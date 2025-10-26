@@ -13,11 +13,14 @@ if (
   delete process.env.HOST;
 }
 
-const host = new URL(process.env.SHOPIFY_APP_URL || 'http://localhost')
-  .hostname;
+// Handle empty string from Docker env vars
+const shopifyAppUrl = process.env.SHOPIFY_APP_URL?.trim() || 'http://localhost';
+const host = new URL(shopifyAppUrl).hostname;
 
 let hmrConfig;
-if (host === 'localhost') {
+// In Docker, always use localhost for WebSocket binding, regardless of SHOPIFY_APP_URL
+const isDocker = process.env.DOCKER_ENV === 'true' || process.platform === 'linux';
+if (host === 'localhost' || isDocker) {
   hmrConfig = {
     protocol: 'ws',
     host: 'localhost',

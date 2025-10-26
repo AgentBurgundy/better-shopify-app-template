@@ -2,6 +2,7 @@
   "name": "shopify-app-template",
   "version": "1.0.0",
   "description": "A clean Shopify app template with yarn workspaces",
+  "type": "module",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -9,6 +10,8 @@
     "packages/*"
   ],
   "scripts": {
+    "setup": "node scripts/setup.js",
+    "rename": "node scripts/rename-app.js",
     "build": "yarn workspaces foreach -At run build",
     "dev": "yarn workspace @myapp/shopify-app dev",
     "clean": "yarn workspaces foreach -A run clean",
